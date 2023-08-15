@@ -11,6 +11,10 @@ class ViewController: UIViewController {
     var isRotated: Bool = false {
         didSet {
             if #available(iOS 16, *) {
+                // explicitly notify the VC of the change in supported interface orientations,
+                // and reload the `supportedInterfaceOrientations` via this method
+                self.setNeedsUpdateOfSupportedInterfaceOrientations()
+
                 let orientation: UIInterfaceOrientationMask = isRotated
                     ? .landscape
                     : .portrait
@@ -65,13 +69,7 @@ class ViewController: UIViewController {
 
         // actions
         rotateButton.addAction(
-            UIAction { _ in
-                self.isRotated.toggle()
-                if #available(iOS 16.0, *) {
-                    // explicitly notify the VC of the change in supported interface orientations
-                    self.setNeedsUpdateOfSupportedInterfaceOrientations()
-                }
-            },
+            UIAction { _ in self.isRotated.toggle() },
             for: .touchDown
         )
     }
