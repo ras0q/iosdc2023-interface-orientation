@@ -11,7 +11,7 @@ class ViewController: UIViewController {
     var isRotated: Bool = false {
         didSet {
             if #available(iOS 16, *) {
-                // explicitly notify the VC of the change in supported interface orientations,
+                // explicitly notify the ViewController of the change in supported interface orientations,
                 // and reload the `supportedInterfaceOrientations` via this method
                 self.setNeedsUpdateOfSupportedInterfaceOrientations()
 
@@ -28,6 +28,7 @@ class ViewController: UIViewController {
                     ? .landscapeLeft
                     : .portrait
 
+                // need to allow temporary screen rotation.
                 canRotate = true
                 UIDevice.current.setValue(orientation.rawValue, forKey: "orientation")
                 canRotate = false
