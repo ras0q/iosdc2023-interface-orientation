@@ -68,8 +68,11 @@ class ViewController: UIViewController {
             rotateButton.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 20),
         ])
 
-        // targets
-        rotateButton.addTarget(self, action: #selector(rotate(_:)), for: .touchDown)
+        // actions
+        rotateButton.addAction(
+            UIAction { _ in self.isRotated.toggle() },
+            for: .touchDown
+        )
     }
 }
 
@@ -93,6 +96,6 @@ extension ViewController {
     }
 
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
-        return .portrait
+        return .allButUpsideDown
     }
 }
