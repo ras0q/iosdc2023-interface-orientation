@@ -45,16 +45,6 @@ class ViewController: UIViewController {
 }
 
 extension ViewController {
-    @available(iOS, obsoleted: 16.0)
-    override var shouldAutorotate: Bool {
-        return false
-    }
-
-    @available(iOS, obsoleted: 16.0)
-    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
-        return UIInterfaceOrientationMask.portrait
-    }
-
     @objc func rotate(_: UIButton) {
         if #available(iOS 16, *) {
             print("rotate pushed, but not implemented!")
@@ -64,5 +54,23 @@ extension ViewController {
                 forKey: "orientation"
             )
         }
+    }
+}
+
+// MARK: - iOS 16 or later
+@available(iOS 16, *)
+extension ViewController {
+
+}
+
+// MARK: - older versions
+@available(iOS, obsoleted: 16.0)
+extension ViewController {
+    override var shouldAutorotate: Bool {
+        return false
+    }
+
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        return UIInterfaceOrientationMask.portrait
     }
 }
