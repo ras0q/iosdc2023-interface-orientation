@@ -10,22 +10,27 @@ import UIKit
 class ViewController: UIViewController {
     var isRotated: Bool = false {
         didSet {
-            let orientation: UIInterfaceOrientationMask = isRotated
-                ? .portrait
-                : .landscape
-
             if #available(iOS 16, *) {
+                let orientation: UIInterfaceOrientationMask = isRotated
+                    ? .landscape
+                    : .portrait
+
                 guard let windowScene = SceneDelegate.window?.windowScene else { return }
-                windowScene.requestGeometryUpdate(
-                    .iOS(interfaceOrientations: orientation)
-                ) { error in
+                windowScene.requestGeometryUpdate(.iOS(interfaceOrientations: orientation)) { error in
                     print(error)
                 }
             } else {
-                UIDevice.current.setValue(orientation, forKey: "orientation")
+                let orientation: UIDeviceOrientation = isRotated
+                    ? .landscapeLeft
+                    : .portrait
+
+                canRotate = true
+                UIDevice.current.setValue(orientation.rawValue, forKey: "orientation")
+                canRotate = false
             }
         }
     }
+    var canRotate: Bool = false
 
     let titleLabel: UILabel = {
         let view = UILabel()
@@ -55,7 +60,7 @@ class ViewController: UIViewController {
             titleLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: 0),
             titleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: 0),
             rotateButton.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: 0),
-            rotateButton.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 20)
+            rotateButton.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 20),
         ])
 
         // actions
@@ -81,6 +86,6 @@ class ViewController: UIViewController {
 
     @available(iOS, obsoleted: 16.0)
     override var shouldAutorotate: Bool {
-        return false
+        return canRotate
     }
 }
