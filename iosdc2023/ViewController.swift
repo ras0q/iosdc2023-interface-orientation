@@ -71,6 +71,6 @@ extension ViewController {
     }
 
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
-        return UIInterfaceOrientationMask.portrait
+        return .portrait
     }
 }
