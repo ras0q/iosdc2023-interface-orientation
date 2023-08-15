@@ -17,7 +17,7 @@ class ViewController: UIViewController {
             if #available(iOS 16, *) {
                 guard
                     let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate
-                        as? SceneDelegate
+                    as? SceneDelegate
                 else {
                     return
                 }
@@ -65,7 +65,7 @@ class ViewController: UIViewController {
             titleLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: 0),
             titleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: 0),
             rotateButton.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: 0),
-            rotateButton.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 20),
+            rotateButton.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 20)
         ])
 
         // actions
