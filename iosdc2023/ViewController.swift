@@ -76,12 +76,6 @@ class ViewController: UIViewController {
     }
 }
 
-extension ViewController {
-    @objc func rotate(_: UIButton) {
-        isRotated.toggle()
-    }
-}
-
 // MARK: - iOS 16 or later
 @available(iOS 16, *)
 extension ViewController {
