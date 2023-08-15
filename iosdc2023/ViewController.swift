@@ -15,17 +15,7 @@ class ViewController: UIViewController {
                 : .landscape
 
             if #available(iOS 16, *) {
-                guard
-                    let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate
-                    as? SceneDelegate
-                else {
-                    return
-                }
-
-                guard let windowScene = sceneDelegate.window?.windowScene else {
-                    return
-                }
-
+                guard let windowScene = SceneDelegate.window?.windowScene else { return }
                 windowScene.requestGeometryUpdate(
                     .iOS(interfaceOrientations: orientation)
                 ) { error in
