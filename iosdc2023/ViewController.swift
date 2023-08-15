@@ -70,26 +70,27 @@ class ViewController: UIViewController {
 
         // actions
         rotateButton.addAction(
-            UIAction { _ in self.isRotated.toggle() },
+            UIAction { _ in
+                self.isRotated.toggle()
+                if #available(iOS 16.0, *) {
+                    // explicitly notify the VC of the change in supported interface orientations
+                    self.setNeedsUpdateOfSupportedInterfaceOrientations()
+                }
+            },
             for: .touchDown
         )
     }
-}
-
-// MARK: - iOS 16 or later
-@available(iOS 16, *)
-extension ViewController {
-
-}
-
-// MARK: - older versions
-@available(iOS, obsoleted: 16.0)
-extension ViewController {
-    override var shouldAutorotate: Bool {
-        return false
-    }
 
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
-        return .allButUpsideDown
+        if isRotated {
+            return .landscape
+        } else {
+            return .portrait
+        }
+    }
+
+    @available(iOS, obsoleted: 16.0)
+    override var shouldAutorotate: Bool {
+        return false
     }
 }
