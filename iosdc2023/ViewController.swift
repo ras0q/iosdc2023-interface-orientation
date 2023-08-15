@@ -8,6 +8,35 @@
 import UIKit
 
 class ViewController: UIViewController {
+    var isRotated: Bool = false {
+        didSet {
+            let orientation: UIInterfaceOrientationMask = isRotated
+                ? .portrait
+                : .landscape
+
+            if #available(iOS 16, *) {
+                guard
+                    let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate
+                        as? SceneDelegate
+                else {
+                    return
+                }
+
+                guard let windowScene = sceneDelegate.window?.windowScene else {
+                    return
+                }
+
+                windowScene.requestGeometryUpdate(
+                    .iOS(interfaceOrientations: orientation)
+                ) { error in
+                    print(error)
+                }
+            } else {
+                UIDevice.current.setValue(orientation, forKey: "orientation")
+            }
+        }
+    }
+
     let titleLabel: UILabel = {
         let view = UILabel()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -46,14 +75,7 @@ class ViewController: UIViewController {
 
 extension ViewController {
     @objc func rotate(_: UIButton) {
-        if #available(iOS 16, *) {
-            print("rotate pushed, but not implemented!")
-        } else {
-            UIDevice.current.setValue(
-                UIInterfaceOrientation.portraitUpsideDown,
-                forKey: "orientation"
-            )
-        }
+        isRotated.toggle()
     }
 }
 
