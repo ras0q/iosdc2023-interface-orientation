@@ -19,7 +19,7 @@ class ViewController: UIViewController {
                     ? .landscape
                     : .portrait
 
-                guard let windowScene = SceneDelegate.window?.windowScene else { return }
+                guard let windowScene = view?.window?.windowScene else { return }
                 windowScene.requestGeometryUpdate(.iOS(interfaceOrientations: orientation)) { error in
                     print(error)
                 }

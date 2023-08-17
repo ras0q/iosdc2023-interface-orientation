@@ -8,7 +8,7 @@
 import UIKit
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
-    static var window: UIWindow?
+    var window: UIWindow?
 
     func scene(
         _ scene: UIScene,
@@ -19,6 +19,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let window = UIWindow(windowScene: windowScene)
         window.rootViewController = ViewController()
         window.makeKeyAndVisible()
-        SceneDelegate.window = window
+        self.window = window
     }
 }
