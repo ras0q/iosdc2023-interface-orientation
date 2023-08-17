@@ -62,10 +62,10 @@ class ViewController: UIViewController {
 
         // constrains
         NSLayoutConstraint.activate([
-            titleLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: 0),
             titleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: 0),
+            rotateButton.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 10),
             rotateButton.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: 0),
-            rotateButton.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 20),
+            rotateButton.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: 0),
         ])
 
         // actions
