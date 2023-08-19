@@ -8,34 +8,10 @@
 import UIKit
 
 class ViewController: UIViewController {
-    var isRotated: Bool = false {
-        didSet {
-            if #available(iOS 16, *) {
-                // explicitly notify the ViewController of the change in supported interface orientations,
-                // and reload the `supportedInterfaceOrientations` via this method
-                self.setNeedsUpdateOfSupportedInterfaceOrientations()
+    var localSupportedInterfaceOrientations: UIInterfaceOrientationMask = .portrait
 
-                let orientation: UIInterfaceOrientationMask = isRotated
-                    ? .landscape
-                    : .portrait
-
-                guard let windowScene = view.window?.windowScene else { return }
-                windowScene.requestGeometryUpdate(.iOS(interfaceOrientations: orientation)) { error in
-                    print(error)
-                }
-            } else {
-                let orientation: UIDeviceOrientation = isRotated
-                    ? .landscapeLeft
-                    : .portrait
-
-                // need to allow temporary screen rotation.
-                canRotate = true
-                UIDevice.current.setValue(orientation.rawValue, forKey: "orientation")
-                canRotate = false
-            }
-        }
-    }
-    var canRotate: Bool = false
+    @available(iOS, obsoleted: 16.0)
+    var localShouldAutorotate: Bool = false
 
     let titleLabel: UILabel = {
         let view = UILabel()
@@ -70,21 +46,56 @@ class ViewController: UIViewController {
 
         // actions
         rotateButton.addAction(
-            UIAction { _ in self.isRotated.toggle() },
+            UIAction { _ in self.toggleOrientations() },
             for: .touchDown
         )
     }
 
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
-        if isRotated {
-            return .landscape
-        } else {
-            return .portrait
-        }
+        return localSupportedInterfaceOrientations
     }
 
     @available(iOS, obsoleted: 16.0)
     override var shouldAutorotate: Bool {
-        return canRotate
+        return localShouldAutorotate
+    }
+
+    private func toggleOrientations() {
+        switch localSupportedInterfaceOrientations {
+        case .portrait:
+            localSupportedInterfaceOrientations = .landscape
+        case .landscape:
+            localSupportedInterfaceOrientations = .portrait
+        default:
+            fatalError("unsupported orientations")
+        }
+
+        if #available(iOS 16, *) {
+            // explicitly notify the ViewController of the change in supported interface orientations,
+            // and reload the `supportedInterfaceOrientations` via this method
+            self.setNeedsUpdateOfSupportedInterfaceOrientations()
+
+            guard let windowScene = view.window?.windowScene else { return }
+            windowScene.requestGeometryUpdate(.iOS(interfaceOrientations: localSupportedInterfaceOrientations)) { error in
+                print(error)
+            }
+        } else {
+            let orientation: UIInterfaceOrientation = {
+                switch localSupportedInterfaceOrientations {
+                case .portrait:
+                    return .portrait
+                case .landscape:
+                    return .landscapeLeft
+                default:
+                    fatalError("unsupported orientations")
+                }
+            }()
+
+
+            // need to allow temporary screen rotation.
+            localShouldAutorotate = true
+            UIDevice.current.setValue(orientation.rawValue, forKey: "orientation")
+            localShouldAutorotate = false
+        }
     }
 }
