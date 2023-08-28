@@ -13,17 +13,21 @@ class ViewController: UIViewController {
     @available(iOS, obsoleted: 16.0)
     var localShouldAutorotate: Bool = false
 
-    let titleLabel: UILabel = {
+    lazy var titleLabel: UILabel = {
         let view = UILabel()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.text = "Hello, iOSDC2023!"
         return view
     }()
 
-    let rotateButton: UIButton = {
+    lazy var rotateButton: UIButton = {
         let view = UIButton(type: .system)
         view.translatesAutoresizingMaskIntoConstraints = false
         view.setTitle("🔄ROTATE🔄", for: .normal)
+        view.addAction(
+            UIAction { _ in self.toggleOrientations() },
+            for: .touchDown
+        )
         return view
     }()
 
@@ -43,12 +47,6 @@ class ViewController: UIViewController {
             rotateButton.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: 0),
             rotateButton.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: 0),
         ])
-
-        // actions
-        rotateButton.addAction(
-            UIAction { _ in self.toggleOrientations() },
-            for: .touchDown
-        )
     }
 
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
